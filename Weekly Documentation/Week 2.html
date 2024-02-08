@@ -16,52 +16,113 @@
 
 <body>
     <main class = "container">
-        <p>
-            1. Build the box<br>
-            2. Do a Fusion 360 tutorial<br>
-            3. Model 2 random household objects in Fusion 360<br>
-        </p>
 
+        <h2 id="week-2-2d-design-and-cutting-">Week 2 - 2D Design and Cutting!</h2>
+        
+        <h3 id="the-story-so-far-with-the-box-">The Story So Far... (with the box)</h3>
+        
+        <h4 id="the-3d-model">The 3D model</h4>
+        
+        <p>I messed around with the 3D model for ages because I wanted to make sure I got all the parameters right. The time was definitely well spent because I now had a box net where I could change everything parametrically. This made it really easy to scale down a smaller version of my box and also very easily update that &quot;working prototype&quot;.</p>
+        
         <div class = "grid">
             <div>
-                <p>Height, Width, Length</p>
+                <p>Height, width, length</p>
                 <img src = "../images/Box/HWL.gif" width = 100%></div>
             <div>
-                <p>Fingers</p>
+                <p>The number of fingers</p>
                 <img src = "../images/Box/Fingers.gif" width = 100%></div>
             <div>
                 <p>Kerf adjustments</p>
                 <img src = "../images/Box/KERF.gif" width = 100%></div>
         </div>
 
-        <h2>Week 2 - 2D Design and Cutting!</h2>
 
-        <h3>The Story So Far...</h3>
+        <div class = "grid">
+            <div>
+                
+                <h4 id="attempt-1">Attempt 1</h4>
+                <p>It cut well and the sides interlock well, but the fingers did not hold because of the kerf. Doing this first cut helped me gain some confidence with the laser cutter and get comfortable with the steps involved.
+                </p>
+                
+                <img src = "../images/Box/First prototype.gif" width = 100%>
 
-        <h4>Attempt 1</h4>
-        <p>
-            Small box with no kerf, doesn't hold together but printed well!
-            Had a bit of trouble with the Laser Cutter
-        </p>
+        
+                <h4 id="attempt-3">Attempt 3</h4>
+                <p>I tried the 0.2mm offset again but it was a little bit too tight for the teensie teeth to handle. The scoring also happened at an odd location which made it difficult to fold the box correctly.</p>
+        
+            </div>
+            <div>
+                <h4 id="attempt-2">Attempt 2</h4>
+                <p>I tried a model with a 0.2mm offset but I may have gotten a bit too confident because I didn&#39;t put the correct laser cutter settings in.
+           Scoring lines didn&#39;t really score and it ended up being a throwaway cut
+                </p>
 
-        <h4>Attempt 2</h4>
-        <p>
-            Forgot to change the material settings<br>
-            Scoring lines didn't really score
-        </p>
+                <h4 id="attempt-4">Attempt 4</h4>
+                <p>I dialed the kerf offset to 0.12mm but that let to a gap that was slightly too big and the box was still opening a little. To fix the issue with the folding, I cut this box at a 45 degree angle to the &quot;grain&quot; of the cardboard and that solved the issue basically perfectly! Having the kerf offset be parametric was a life saver because it meant that I could make a bunch of adjustments</p>        
 
-        <h4>Attempt 3</h4>
-        <p>
-            Kerf was too big!
-            Also the folds for the scoring were weird
-            Next version will be at 45 degrees to see if I can avoid that!
-        </p>
+                <img src = "../images/Box/Final prototype.jpeg" width = 100%>
 
-        <h4>Attempt 4</h4>
-        <p>
-            Kerf was a teensie bit too small ://
-            The 45 degree thing worked though! It looks so good
-        </p>
+            </div>
+        </div>
+
+        
+        
+        
+        
+        
+        <h4 id="attempt-5-printing-the-final-box">Printing the final box</h4>
+        <p>I dialed the kerf offset up a little to 0.15mm but it ended up being worse at sticking than the smaller one was (even though the offset was bigger?)! <br> Nothing a bit of tape can&#39;t fix though.</p>
+        <p>I think I didn&#39;t account for bigger boxes having more &quot;give&quot; due to the bigger fingers, maybe in the next version I&#39;ll give 0.2mm another shot.</p>
+        <img src = "../images/Box/Da boox.jpeg" width = 80%>
+
+        <h3 id="practicing-more-modelling">Practicing more modelling</h3>
+        
+        <h4 id="fusion-360-tutorials">Fusion 360 Tutorials</h4>
+        <p>I followed 2 tutorials:</p>
+        <ol>
+           <li><a href="https://www.youtube.com/@ProductDesignOnline">Day 1 of Learn Fusion 360 in 30 Days for Complete Beginners!</a></li>
+           <li><a href="https://www.youtube.com/@ProductDesignOnline">Day 2 of Learn Fusion 360 in 30 Days for Complete Beginners!</a></li>
+        </ol>
+        <p>It was honestly really fun learning how to use these tools. I can tell that getting a handle on them early is going to help me in the future parts of my project</p>
+        
+        <p>Here's what I made!</p>
+
+        <div class = "grid">
+            <div>
+                <img src = "../images/3D model shots/Lego Piece v3.png" width = 80%><br>
+            </div>
+            <div>
+                <img src = "../images/3D model shots/Glass Bottle v3.png" width = 80%><br>
+            </div>
+        </div>
+
+        <ul>
+            <li><a href = "../3D Files/Lego Piece v3.f3d">Fusion file for the "toy brick"</a></li>
+            <li><a href = "../3D Files/Glass Bottle v3.f3d">Fusion file for the glass bottle</a></li>
+
+        </ul>
+        
+        <p>I learned how to use a bunch of tools on Fusion too!</p>
+        <ul>
+           <li>Extrude</li>
+           <li>Revolve</li>
+           <li>Solid rectangular pattern</li>
+           <li>Shell tool (this one was fun to use)</li>
+           <li>Fillet tool (I wish it was this easy in real life)</li>
+        </ul>
+
+        <h4 id="two-household-objects">Two Household objects</h4>
+        <p>I decided to keep it simple and use what I had around me. Combining a USB dongle and a USB cable. The most interesting part about this was watching I had measured pretty quickly with callipers turn into something surprisingly true to life in Fusion 360. Bobby also taught me how to use the &quot;Joint&quot; tool which made things a whole lot easier. </p>
+
+        <div class = "grid">
+            <div>
+                <img src = "../images/3D model shots/Caliper measuring.jpeg" width = 100%>
+            </div>
+            <div>
+                <img src = "../images/3D model shots/USB assembly.gif" width = 100%>
+            </div>
+        </div>
 
     </main>
     
