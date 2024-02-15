@@ -29,16 +29,16 @@
 
         <article>
             <h2 id="original-goal-">Original Goal:</h2>
-            <p>I wanted to make a somewhat reminiscent Sisyphus during this project and this <a href="https://www.youtube.com/watch?v=urVOe2vg-3E&amp;t=222s">Lego Tutorial</a> seemed like the perfect place to start.</p>
-            <p>I was hoping to at least make the mechanism for the movement of the legs. This is probably the most important part (and also looked a lot less complicated)</p>
+            <p>I wanted to make a start on some sort of Sisyphus during this project and this <a href="https://www.youtube.com/watch?v=urVOe2vg-3E&amp;t=222s">Lego Tutorial</a> seemed like the perfect place to start.</p>
+            <p>I was hoping to at least make the mechanism for the movement of the legs. This is probably the most important part (and also looked a lot less complicated).</p>
             <p>My much simpler focus: <br><br><img src = "../images/Kinetic Sculpture/Lego video.png" width = 80%></p>    
         </article>
 
         <article>
             <h2 id="what-i-managed-to-make">What I managed to make</h2>
             
-            <p>I was able to put together the mechanism that controls the legs!! But I was not able to make the actual legs or anything to hold it in place.</p>
-            <p>Honestly I'm counting it as a win, look at my lil guy</p><img src = "../images/Kinetic Sculpture/my lil guy xx.gif" width = 80%>
+            <p>I actually did put together the leg mechanism!! I wasn't able to make the actual legs or anything to hold it in place.</p>
+            <p>Honestly I'm still counting it as a win because look at this lil guy:</p><img src = "../images/Kinetic Sculpture/my lil guy xx.gif" width = 80%>
         </article>
 
 
@@ -46,7 +46,7 @@
 
         <h3 id="step-1-the-bar-linkage">Step 1: The Bar Linkage</h3>
 
-        <p>I got the dimensions of the bar linkages from the video and then messed around with them on this <a href="https://www.diywalkers.com/4-bar-linkage-optimizer.html">odd site</a> and then on <a href="https://motiongen.io/core">MotionGen</a>.</p>
+        <p>I got the dimensions of the bar linkages from the video and then messed around with them on <a href="https://www.diywalkers.com/4-bar-linkage-optimizer.html">odd site</a> and <a href="https://motiongen.io/core">MotionGen</a>.</p>
 
         <div class = "grid">
             <div><img src = "../images/Kinetic Sculpture/SCRATCH site.png" width = 100%></div>
@@ -55,13 +55,13 @@
 
         <br>
 
-        <p>After that, I laser cut my pieces out according to this Fusion360 sketch</p>
+        <p>The tools were pretty limited but they showed me that it was actually working. Here's the Fusion360 sketch for the pieces.</p>
         <img src = "../images/Kinetic Sculpture/both the leggie sketches.png" width = 60%>
 
         <br>
         <br>
 
-        <p>This was going a little <em>too</em> well and I was getting suspicious. I was right. When I tried to combine the pieces, the screw heads and nuts sticking out on the opposite ends of the screw hole cutout would interfere with itself. Specifically on the bottom left joint shown in the image below. I worked around this by power drilling the cardboard :).</p>
+        <p>This was going a little <em>too</em> well and I was getting suspicious. I was right to be. When I tried to combine the pieces, the screw heads and nuts sticking out on the ends of the screw holes would interfere with the arms. Specifically on the bottom left joint shown in the image below. I worked around this by power drilling the cardboard :).</p>
         <p>This made a bigger hole and allowed the screw head to be flush with the cardboard and the nut was just sticking out on the non-interfering side. It's hard to see in the moving picture below but take my word for it.</p>
 
         <img src = "../images/Kinetic Sculpture/Four Bar GIF.gif">
@@ -70,23 +70,23 @@
         <h3 id="step-2-the-motor">Step 2: The motor</h3>
 
         <p>Now that I had a functional linkage working the next step was to cut out pieces that would interface with the motor. Like many I found out that the cardboard does not hold it's ground against the strength of the motor.</p>
-        <p>To fix the flimsiness, I opted to use clear acrylic and cut out new pieces. There was only one usable sheet so I was conservative with the kerf and ended up with holes too small. Nothing some power drilling couldn't fix though :))</p>
+        <p>To fix the flimsiness, I opted to use clear acrylic and cut out new pieces. There was only one usable sheet so I was conservative with the kerf and ended up with holes too small. Nothing some more power drilling couldn't fix though :)).</p>
 
         <img src = "../images/Kinetic Sculpture/lil guy photo op.jpeg" width = 40%><br><br>
 
-        <p>There was also a lot of issues with getting the pieces to move smoothly, often the lock nuts were slipping off because I couldn't tighten them enough. Figuring out the right combination of spacers for the middle piece was especially challenging.</p>
+        <p>There were also a lot of issues with getting the pieces to move smoothly, often the lock nuts were slipping off because I couldn't tighten them enough. Figuring out the right combination of spacers for the middle piece was especially challenging.</p>
         
         
         <div class = "grid">
             <div>
                 <h3 id="step-3-fixing-it-in-place-keeping-it-on-a-leash">Step 3: <s>fixing it in place</s> Keeping it on a leash</h3>
 
-
-                <p>That's the plan I had for the base</p>
-                <p>Unfortunately <s>I was really tired</s> the robot did not want to be stuck to the ground forced to move nowhere. I did have to leash it with the cables so it didn't run away.</p>
-                <p>I'd really like to work more with the microcontroller to see if I can stop it from flailing around quite as much. It'll also be necessary for my final project. Creating a gear assembly to gear down the motor would be really helpful too, it really does not need to be that powerful.</p>        
-                
-                <p>The sketch makes more sense if you look at it long enough. The weird stick thing is to support the green body piece while the legs move.</p>
+                <p>This sketch is the plan I had for the rest of the structure.</p>
+                <p>Unfortunately <s>I was really tired</s> the robot did not want to be stuck to a base so I leashed it with cables so it didn't run away.</p>
+               
+                <p>The sketch makes more sense if you look at it long enough. The weird stick thing is for supporting the green body piece while the legs move.</p>
+               
+                <p>I'd really like to work more with the microcontroller to see if I can stop it from flailing around with some finer control. I'll need to work on slowing it down for my final project anyway. Creating a gear assembly to gear down the motor would be really helpful too. Working with ratios right now feels impractical because of how flimsy carboard has been. Hopefully with more experience with the 3D printer, it'll be more feasible because the legs really do not need to move that fast.</p>
             
             </div>
             <div>
@@ -94,7 +94,7 @@
             </div>
         </div>
         
-        <h4 id="step-4-miss-the-bus-home">Step 4: Miss the last bus home</h4>
+        <h4 id="step-4-miss-the-bus-home">Step 4: Missing the last bus home</h4>
         <p>I don't want to talk about it.</p>
 
         <h3>It can also do this:</h3>
