@@ -1,0 +1,230 @@
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PS 70: Intro to Digital Fabrication</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.css">
+</head>
+
+<header>
+    <nav class = "container">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About me!</a>
+    </nav>
+</header>
+
+<body>
+    
+    <main class = "container">
+
+    <h2 id="week-4-incorporating-the-microcontroller">Week 4: Incorporating the Microcontroller</h2>
+    
+    <p>Things I managed to do this week!</p>
+    
+    <ul>
+        <li>Set up a box to house motor assembly (finally)</li>
+        <li>Set up a way to control the mechanism (on/off state + speed control)</li>
+    </ul>
+
+    <p>The circuit looks like a mess but it is very much a step in the right direction:</p>
+    <img src = "../images/Circuit/circuit picture.jpeg" width = 80%>
+
+    <h3 id="the-housing">The "Housing"</h3>
+
+    <h4 id="step-1-making-the-box">Step 1: Making the Box</h4>
+
+    <p>I made a new box with a new set up! Instead of the folding net box which had scored lines to fold along, I made a new one with 6 separate interlocking faces that are technically &quot;interchangeable&quot;.</p>
+    <p>This is what the Fusion 360 Sketch looks like:</p>
+    <img src = "../images/Circuit/box net.png" width = 80%><br><br>
+
+    <p>One way that this was useful was when I needed to add a support to the bottom of the box. I made a new bottom piece with a hole in it and was able to interchange it with the old one, slotting in a little support piece that now holds up the motor assembly.</p>
+    <p>This new method is a lot more compatible with my rapid prototyping dreams.</p>
+
+    <div class = "grid">
+        <div><img src = "../images/Circuit/box proto 1.JPG" width = 100%></div>
+        <div><img src = "../images/Circuit/box proto 2.JPG" width = 100%></div>
+    </div>
+    
+    <h4 id="step-2-making-it-more-compatible-with-the-skjfhsdj-of-the-motor">Step 2: Making it more compatible with the SKJFHSDJ of the motor</h4>
+    
+    <p>An issue I didn&#39;t account for was how the assembly hitting the sides of the boxes. I ended up cutting semicircles that allow for rotation without friction and also removed a whole side piece to make room for this. You can see where I made the cuts. I was not going for subtlety with this one.</p>
+    <img src = "../images/Circuit/motor no supp.JPG" width = 80%><br><br>
+    <p>In a future version I will probably have these cut in the Fusion 360 Sketch itself, making it look a lot cleaner and hopefully also more structurally sound.</p>
+    
+    <h4 id="step-3-adding-the-support">Step 3: Adding the support</h4>
+    <p>I already showed a little bit of this earlier but this is how the support actually helps:</p>
+    
+    <div class = "grid">
+        <div><img src = "../images/Circuit/motor support 1.JPG" width = 100%></div>
+        <div><img src = "../images/Circuit/motor support 2.JPG" width = 100%></div>
+    </div><br>
+    
+    <p>It&#39;s holding up the motor at a height where that beam (red arrow) is somewhat horizontal. The beam being horizontal is vital for the proper placement of the arc the four bar assembly traces out.</p>
+    <p>Once this was stable enough to not explode on me, I started work on the controller !</p>
+    
+    <h3 id="the-controller">The Controller</h3>
+    
+    <h4 id="step-1-getting-the-button-to-turn-the-motor-on-and-off">Step 1: Getting the button to turn the motor on and off</h4>
+    
+    <ul>
+        <li>I can only read the button&#39;s current state straight from the Arduino using the <code>pinMode(buttonPin, INPUT_PULLUP)</code>. Basically just whether or not it is currently being pressed.</li>
+        <li>The functionality I&#39;m looking for though is a toggle button that turns the motor on and off. To accomplish this I used this code:</li>
+    </ul>
+    
+    <div class = "grid">
+        <div>
+            <pre><code>
+    int OLD_STATE = STATE;
+    STATE = digitalRead(buttonPin);
+
+    if (OLD_STATE == 1 &amp;&amp; STATE == 0) {
+        MOTOR_ON = !MOTOR_ON;
+    }
+            </code></pre>
+        </div>
+        <div>
+            <img src = "../images/Circuit/but cir.JPG" width = 70%>
+        </div>
+    </div>
+
+    <br>
+
+    <ul>
+        <li>The state variables allowed me to track changes in the button press. When it went from not being pressed to being pressed I would toggle <code>MOTOR_ON</code>.</li>
+        <li>This was probably the most conceptually difficult part.</li>
+    </ul>
+    
+    <h4 id="step-2-controlling-the-speed-of-the-motor-with-a-potentiometer">Step 2: Controlling the speed of the motor with a potentiometer</h4>
+    
+    <ul>
+        <li>This part wasn&#39;t too difficult because we&#39;ve done it before but it makes the circuit look very messy.</li>
+        <li>The more interesting part was how the potentiometer value was fed to the motor. The motor control board connected to the Arduino and would write the <code>pot_val</code> to the motor via a PWM pin.</li>
+        <li>This is the code that I used to control both the speed and the on state:</li>
+    </ul>
+
+    <div class = "grid">
+        <div>
+            <pre><code>
+    //reading the potentiometer value for speed
+    int pot_val = analogRead(pot_pin);
+
+    //using the button input to set speed
+    if (MOTOR_ON) {
+        SPEED = pot_val;
+    } else {
+        SPEED = 0; //turns off motor when no input
+    }
+
+    //writing the speed
+    int motor_speed = map(SPEED, 0, 1023, 255, 0);
+    analogWrite(motor_pin, motor_speed);
+            </code></pre>
+        </div>
+        <div>
+            <img src = "../images/Circuit/pot cir.JPG" width = 80%>
+        </div>
+    </div>    
+
+    <h4 id="step-3-getting-the-led-to-show-the-on-state">Step 3: Getting the LED to show the on state</h4>
+    
+    <ul>
+        <li>This part sucked because I had to get an extra wire and I didn&#39;t want to get up</li>
+        <li>Other than that it was pretty simple getting it tied to the motor state, I just added a line in the <code>if</code>/<code>else</code> statement:</li>
+    </ul>
+
+    <div class = "grid">
+        <div>
+            <pre><code>if (MOTOR_ON) {
+                SPEED = pot_val;
+                digitalWrite(led_pin, HIGH); //LED on when motor on
+            } else {
+                SPEED = 0; //turns off motor when no input
+                digitalWrite(led_pin, LOW); // LED off when motor off
+            }
+            </code></pre>
+        </div>
+        <div>
+            <img src = "../images/Circuit/led gid.gif" width = 80%>
+        </div>
+    </div>
+
+
+
+    <h4>Reflecting on building the circuit:</h4>
+    <p>The circuit building part was harder to put in a step by step method but I do have some fun reflections from it.</p>
+    <ul>
+        <li>Bobby was 100% right about using different coloured wires, there are two yellow wires on my breadboard and every time I look at it my brain starts lagging.</li>
+        <li>Using the pin-pin wires is really useful for prototyping but I&#39;d like to use more cut to length wires ASAP to make it easier to look at. The wires look like solar flares right now.</li>
+        <li>Having black wires to connect to ground makes it a lot easier to follow where the circuit ends and it was particularly useful for the LED wiring</li>
+    </ul>
+
+    <h3 id="very-professional-video-of-it-working">Very professional video (gifs) of it working:</h3>
+    
+    <img src = "../images/Circuit/VID 1.gif" width = 80%><br><br>
+    <img src = "../images/Circuit/WID 2.gif" width = 80%><br><br>
+    
+    <p>Here is the schematic for the circuit diagram:</p>
+    <img src = "../images/Circuit/circuit drawing.jpeg" width = 80%>
+    <p>Here is the whole code:</p>
+    <pre><code>
+//pins
+int pot_pin = A0;
+int motor_pin = 3;
+int led_pin = 2;
+int buttonPin = 13;
+
+//other variables
+int SPEED = 0;
+int STATE = 1;
+bool MOTOR_ON = false;
+
+void setup() {  
+
+    pinMode(motor_pin, OUTPUT);
+    pinMode(pot_pin, INPUT);
+    
+    pinMode(buttonPin, INPUT_PULLUP);
+    pinMode(led_pin, OUTPUT);
+
+}
+
+
+
+void loop() {
+
+    //Reading the button press to turn the motor on and off
+    int OLD_STATE = STATE;
+    STATE = digitalRead(buttonPin);
+    
+    if (OLD_STATE == 1 &amp;&amp; STATE == 0) {
+        MOTOR_ON = !MOTOR_ON;
+    }
+    
+    //reading the potentiometer value for speed
+    int pot_val = analogRead(pot_pin);
+    
+    //using the button input to set speed and LED state
+    if (MOTOR_ON) {
+        SPEED = pot_val;
+        digitalWrite(led_pin, HIGH);
+    } else {
+        SPEED = 0; //turns off motor when no input
+        digitalWrite(led_pin, LOW);
+    }
+    
+    //writing the speed
+    int motor_speed = map(SPEED, 0, 1023, 255, 0);
+    analogWrite(motor_pin, motor_speed);
+    delay(1);
+
+}
+    </code></pre>
+    <h4 id="coming-soon">Coming Soon...</h4>
+
+    <img src = "../images/Circuit/coming soon.JPG" widht = 80%>
+
+    </main>
+    
+</body>
+</html>
