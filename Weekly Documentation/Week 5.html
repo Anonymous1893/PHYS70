@@ -1,0 +1,113 @@
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PS 70: Intro to Digital Fabrication</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.css">
+</head>
+
+<header>
+    <nav class = "container">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About me!</a>
+    </nav>
+</header>
+
+<body>
+    
+    <main class = "container">
+
+        <h3 id="3d-printing">3D Printing</h3>
+        
+        <p>This week I really wanted to do a print in place 3D figure that had moving joints.</p>
+        <p>3D modeling was definitely the hardest part here. Making all of the joints for the individual pieces, making sure there was enough room that the joints wouldn't be stuck in place, using the fillet tool to make sure the parts didn't interfere with themselves, it was a lot. I actually missed filleting some of the joints but I fixed it for the larger print.</p>
+        <p>Once I'm a bit more familiar with blender, I'm planning on creating a more organic looking figure. In my head I feel like it'll only take an hour of messing around but I know that's not true.</p>
+        
+        <div class = "grid">
+            <div>
+                <img src = "../images/3D printing week/3d homie.png" width = 100%><br><br>
+            </div>
+            <div>
+                <img src = "../images/3D printing week/lil homie.jpeg" width = 100%><br><br>
+            </div>
+        </div>
+
+        
+        <p>Things that would make it difficult to create with traditional subtractive methods:</p>
+        
+        <ul>
+           <li>Making in place articulating joints</li>
+           <li>Making curved surfaces on those print in place joints</li>
+           <li>The organic curves (future) will also benefit from the advantages of additive design</li>
+        </ul>
+        
+        <p>I'll use the bigger version in my final project's MVP assembly!</p>
+        <p>Here's the <a href = "../3D Files/Sisyphus Assembly.f3d">3D model</a>, <a href = "../3D Files/Sisyphus Assembly good.stl">STL file</a>, and <a href = "../3D Files/azh sisyphus assemblie.gcode">gcode</a>
+        </p>
+        
+        <p>Here's some other things I got to 3D print this week:</p>
+        
+
+        <div class = "grid">
+            <div>
+                <ul>
+                    <li>My first attempt at 3D printing, the 6 minute print</li>
+                    <li>A print in place bag clip (with teeth)</li>
+                    <li>A flat whistle ??</li>
+                 </ul>
+            </div>
+            <div>
+                <img src = "../images/3D printing week/ring prusa.jpeg" width = 100%>
+            </div>
+        </div>
+
+        <div class = "grid">
+            <div>
+                <img src = "../images/3D printing week/clip prusa.png" width = 100%>
+            </div>
+            <div>
+                <img src = "../images/3D printing week/whistle prusa.png" width = 100%><br><br>(infill and top layer removed)
+            </div>
+        </div>
+
+        
+        
+        <h3 id="photogrammetry">Photogrammetry</h3>
+        
+        <p>The demonstration made it look a lot more promising than it ended up feeling when I used it. This technology is amazing but it definitely has a little bit more to go.</p>
+        <p>Some of the challenges I ran into:</p>
+        
+        <div class = "grid">
+            <div>
+                <ul>
+                    <li>I tried to scan my DS but that didn't work because it was too big to be seen properly by the RevoPoint. The point cloud would randomly fold over itself every time I tried.</li>
+                    <li>When scanning the hand, it seemed like I had gotten a pretty good scan but there were intricacies I had not account for. Like the entire under side of the scan and the fatigue from having to hold up my hand for that long. Alas another failed experiment</li>
+                    <li>When I settled on scanning my Pomodoro Timer (see image), I had issues with merging two scans to get the whole model. Do not sleep on the dangling by a thread and rotating method.</li>
+                    <li>Cleaning up the holes was definitely easier on the pomodoro timer. The hand didn't have predictable geometries so it would just make weird flat planes out of nothing</li>
+                 </ul>         
+            </div>
+            <div>
+                <img src = "../images/3D printing week/pomo scan.jpeg" width = 80%>
+            </div>
+        </div>
+        
+        <p>Eventually I got a scan that I thought looked a little low quality but when I put it through the 3D printer it came out really nicely! I did a small scale 15 minute print of it and I think it looks stupid cute.</p>
+        
+        <div class = "grid">
+            <div>
+                <img src = "../images/3D printing week/pomo smol.jpeg" width = 100%><br>
+
+            </div>
+            <div>
+                <img src = "../images/3D printing week/pomo comparison.jpeg" width = 100%><br>
+            </div>
+        </div>
+
+        <p>Here's the <a href = "../3D Files/azh lil timmer.stl">STL</a> and the <a href = "../3D Files/azh lil timmer.gcode">gcode</a> for the timer</p>
+        <p>I'd love to take the time to scan one of the other two again with all the "experience" I have gained.</p>
+    
+    </main>
+    
+</body>
+</html>
