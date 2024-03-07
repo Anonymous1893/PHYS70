@@ -1,0 +1,113 @@
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>PS 70: Intro to Digital Fabrication</title>
+		<link rel="stylesheet" href="../style.css" />
+        <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+        />
+    </head>
+
+	<header>
+		<nav class="container">
+			<a href="../index.html">Home</a>
+			<a href="../about.html">About me!</a>
+		</nav>
+	</header>
+
+	<body>
+		<main class="container">
+			<h2 id="capacitive-sensor">Capacitive Sensor</h2>
+			<p>
+				My favorite part about capacitive sensors was how they are affected by
+				humans. It was so cool that I could very rudimentary detect the presence
+				of my hand with a sheet of aluminum foil.
+			</p>
+			<p>
+				I was thinking about making a capacitive sensor grid but that looked a
+				little too complicated. Instead, I made this! 
+			</p>
+
+            <img src = "" width = 80%><br><br>
+
+			<p>
+				This row of foil can detect where in the foil a "human" finger
+				is hovering and it does a pretty good job of tracking it.
+			</p>
+			<p>
+				There were many challenges involved in making this work properly though.
+				The biggest challenge being how dodgy capacitive sensors are. Here's
+				a list of things that would change the output values.
+			</p>
+			<ul>
+				<li>Touching the sensor</li>
+				<li>Moving the sensor further from my laptop</li>
+				<li>Touching my laptop</li>
+				<li>Standing up/sitting down</li>
+				<li>Taking off one of my rings.</li>
+				<li>Disconnecting the Arduino and plugging it back in</li>
+			</ul>
+			<p>
+				It was shocking how much the value would vary, I am truly in awe that
+				people have figured out how to use this technology for such precise
+				applications.
+			</p>
+			<p>The rows of the sensor are set up like this:</p>
+
+            <div class = "grid">
+                <div>
+                    <img src = "" width = 90%><br>
+                </div>
+                <div>
+                    <img src = "" width = 90%><br>
+                </div>
+            </div>
+
+			<p>
+				Based of this IMAGE from the course site, I imagine that the readout
+				from the analogue pins drops due to my finger acting as a stronger and
+				closer ground than the Rx strip.
+			</p>
+			<p>
+				After picking the threshold values (which change every time I turn it
+				on), I was able to get some state variables going to track whether each
+				pair was detecting a change in capacitance. If both pairs detected a
+				signal, the "finger" was in the middle and the middle LED
+				would turn on. If either side detected a signal, then the corresponding
+				side's LED would turn on.
+			</p>
+			<p>
+				I'm pretty happy with this. The biggest barrier to actually using
+				capacitive sensors in my assignment would be how unreliable the
+				capacitance values are. Maybe if I could dynamically control the
+				threshold, the sensor would be more useful.
+			</p>
+			<h2 id="ultrasonic-sensor">Ultrasonic Sensor</h2>
+			<p>
+				The Ultrasonic sensor is a stark departure from the capacitive sensor.
+				Not only is the sensor value highly reliable, it is also a linear
+				function that I can calibrate with ease.
+			</p>
+			<p>
+				According to the trend line, a value of 0 = 0cm away and a value of 5600
+				= 100cm away. The sensor value can be calibrated with a simple
+				<code>value/56</code>. This makes the sense considering the way that an
+				ultrasonic sensor works: IMAGE
+			</p>
+			<p>
+				The sensor sends out a pulse (trigger) and has that pulse that read
+				(echo) by the echo channel. The value returned is the time between the
+				trigger and the echo which is directly proportional to the distance.
+			</p>
+			<p>
+				Using this sensor value I was able to control an LED that detects
+				proximity, if my hand was closer than 20cm (<code>sensorVal = 1100</code
+				>) then the LED will turn on. It's hard to tell in the GIF but I
+				promise it works.
+			</p>
+			<p>Here's a schematic for the sensor: IMAGE</p>
+		</main>
+	</body>
+</html>
