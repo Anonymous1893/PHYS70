@@ -30,7 +30,7 @@
 				little too complicated. Instead, I made this! 
 			</p>
 
-            <img src = "" width = 80%><br><br>
+            <img src = "../images/Sensors/cap sense img.JPG" width = 80%><br><br>
 
 			<p>
 				This row of foil can detect where in the foil a "human" finger
@@ -58,18 +58,21 @@
 
             <div class = "grid">
                 <div>
-                    <img src = "" width = 90%><br>
+                    <img src = "../images/Sensors/cap gif.gif" width = 90%><br>
                 </div>
                 <div>
-                    <img src = "" width = 90%><br>
+                    <img src = "../images/Sensors/Cap Sens schem.jpeg" width = 90%><br>
                 </div>
             </div>
 
 			<p>
-				Based of this IMAGE from the course site, I imagine that the readout
+				Based on the image below (pulled from the course site), I imagine that the readout
 				from the analogue pins drops due to my finger acting as a stronger and
 				closer ground than the Rx strip.
 			</p>
+
+            <img src = "../images/Sensors/Cap finger.png" width = 80%><br><br>
+
 			<p>
 				After picking the threshold values (which change every time I turn it
 				on), I was able to get some state variables going to track whether each
@@ -94,8 +97,11 @@
 				According to the trend line, a value of 0 = 0cm away and a value of 5600
 				= 100cm away. The sensor value can be calibrated with a simple
 				<code>value/56</code>. This makes the sense considering the way that an
-				ultrasonic sensor works: IMAGE
+				ultrasonic sensor works:
 			</p>
+
+            <img src = "../images/Sensors/US how to.png" width = 80%><br><br>
+
 			<p>
 				The sensor sends out a pulse (trigger) and has that pulse that read
 				(echo) by the echo channel. The value returned is the time between the
@@ -103,11 +109,17 @@
 			</p>
 			<p>
 				Using this sensor value I was able to control an LED that detects
-				proximity, if my hand was closer than 20cm (<code>sensorVal = 1100</code
+				proximity, if my hand was closer than 10cm (<code>sensorVal = 1100</code
 				>) then the LED will turn on. It's hard to tell in the GIF but I
 				promise it works.
 			</p>
-			<p>Here's a schematic for the sensor: IMAGE</p>
+
+            <img src = "../images/Sensors/us sense.gif" width = 80%><br><br>
+
+			<p>Here's a schematic for the sensor:</p>
+
+            <img src = "../images/Sensors/US Sense Chem.jpeg" width = 80%><br><br>
+
 		</main>
 	</body>
 </html>
