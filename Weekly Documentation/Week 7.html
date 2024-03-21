@@ -1,0 +1,300 @@
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>PS 70: Intro to Digital Fabrication</title>
+		<link rel="stylesheet" href="../style.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+		/>
+	</head>
+
+	<header>
+		<nav class="container">
+			<a href="../index.html">Home</a>
+			<a href="../about.html">About me!</a>
+		</nav>
+	</header>
+
+	<body>
+		<main class="container">
+			<h2 id="mvp-week-">MVP week !!!</h2>
+
+			<h5>
+				<em style="font-weight: 300"
+					>"I cannot lie, this product is minimally viable." - Ancestry.com</em
+				>
+			</h5>
+
+			<h3 id="the-four-bar-limpage">The Four Bar Limp-age</h3>
+
+			<p>
+				Initially, I had the goal of modifying the four bar linkage from the
+				previous weeks to trace out an arc where the path was similar to
+				climbing stairs. I actually made a lot of progress on that and found out
+				about a lot of cool ways that people have solved the stair climbing
+				problem:
+			</p>
+
+			<div class="grid">
+				<div>
+					<ul>
+						<li>
+							<a href="https://www.youtube.com/watch?v=46qEgN3eqkA"
+								>This stair climbing robot video</a
+							>
+							(not exactly what I'd want)
+						</li>
+						<li>
+							Klann mechanisms for "organic" but very spider/crab like movements
+							(on the right)
+						</li>
+					</ul>
+				</div>
+
+				<div><img src="../images/MVP week/Klann.gif" width="100%" /><br /></div>
+			</div>
+			<br />
+
+			<p>
+				In the end I went for a modified four bar linkage. <br />
+				1. because it was easier to model, and <br />
+				2. because I couldn't get MotionGen to make a Klann arc that I was happy
+				with.
+			</p>
+
+			<div class="grid">
+				<div>
+					Bad Klann >:(<br /><br />
+					<img src="../images/MVP week/klann motion.png" width="100%" />
+				</div>
+				<div>
+					Good four bar :)<br /><br />
+					<img src="../images/MVP week/four bar motion.png" width="100%" />
+				</div>
+			</div>
+			<br />
+
+			<p>
+				This was "fun" to 3D model. Making sure that the rotating arms didn't
+				collide into each other was very important if to make the print in place
+				joints work. Unfortunately the scale was so small that all the joints
+				ended up <em>joined</em> together. It broke while pulling it off the
+				heat bed and also broke when I tried to turn any of the joints.
+				<br />Nothing remains.
+			</p>
+
+			<img
+				src="../images/MVP week/3de linkage front.png"
+				width="90%"
+			/><br /><br />
+			<img
+				src="../images/MVP week/3d linkage side.png"
+				width="90%"
+			/><br /><br />
+
+			<p>
+				I did the second print vertically so that the Z-axis was not parallel to
+				the joint. To do this I had to separate the arms and make some snap fit
+				rotational joints to bring them back together. They worked a lot better
+				than the print in place joints and were by far the smoothest joints.
+				They also looked the worst though. This made it a lot strong and none of
+				the joints broke while operating. There is a decent amount of friction
+				though so it's hard to say 3D printing would is the right move for the
+				next version.
+			</p>
+
+			<div class="grid">
+				<div>
+					close up of snap fit
+					<img src="../images/MVP week/snap fit joint.JPG" width="100%" />
+				</div>
+				<div>
+					full view real
+					<img src="../images/MVP week/full view part two.JPG" width="100%" />
+				</div>
+				<div>
+					prusa look
+					<img src="../images/MVP week/prusa vert.png" width="100%" />
+				</div>
+			</div>
+
+			<h3 id="the-pomodoro-component">The Pomodoro Part</h3>
+			<p>
+				After working on the walking mechanism all week, I decided that it's
+				more of a late game problem especially when it comes to the problem I'm
+				actually trying to solve with this project.
+			</p>
+			<p>
+				Shifting the focus to the pomodoro component, I wired up the ESP32 with
+				an LCD display and five buttons:
+			</p>
+
+			<img src="../images/MVP week/circuit image.JPG" width="80%" />
+
+			<h4 id="the-display-working-with-pinouts-and-i2c">
+				The display: working with pinouts and I2C
+			</h4>
+			<p>
+				I would have never expected that the pin D6 was actually Arduino pin 21.
+				Once I found this pinout diagram, I was able to set custom SDA and SCL
+				pins to interface with the display.
+			</p>
+
+			<img src="../images/MVP week/pinout for esp32.png" width="90%" /><br><br>
+
+			<p>
+				I2C was fun to work with once I figured out the pin situation. Following
+				this
+				<a
+					href="https://randomnerdtutorials.com/esp32-esp8266-i2c-lcd-arduino-ide/"
+					>tutorial.</a
+				>
+			</p>
+			<h4 id="the-buttons-">The buttons:</h4>
+			<p>
+				The biggest challenge with getting these to work was creating reliable
+				connections to the ESP32. Soldering it to the header pins was the only
+				real solution to this problem.
+			</p>
+			<p>
+				The YouTube videos made it a look so simple, probably because their
+				soldering irons weren't as corroded. After cleaning it off (and a lot of
+				help from Kassia) it really did end up being that simple. Maybe I will
+				solder again some day.
+			</p>
+			<p>
+				Everything else was fairly straightforward, I was even able to reuse the
+				code from the Arduino button classes to get it to work.
+			</p>
+
+			<h4>Coming together</h4>
+
+			<p>
+				Using the magic of programming, instead of printing to Serial I am not
+				printing to the LCD screen!
+			</p>
+
+			<p>This is what it looks like:</p>
+
+			<img src="../images/MVP week/integrated stuff.gif" width="100%" /><br><br>
+
+			<p>
+				It was very satisfying to be able to integrate at least one input device
+				and one output device. I've attached the code at the bottom.
+			</p>
+
+			<h4 id="what-s-next-">What's next?</h4>
+			<p>
+				Getting the LCD to display text and getting the buttons to register took
+				so much time that the actual programming of it all had to take the
+				backseat. I'm going to leave the display to the side for the moment and
+				work on getting the logic to work with just the buttons.
+			</p>
+			<p>There are going to be five buttons:</p>
+			<ul>
+				<li>
+					3 buttons for Hours, Minutes, Seconds: These will be used to set the
+					timer
+				</li>
+				<li>
+					Start and Stop buttons: Self explanatory but feel free to email me
+					with questions.
+				</li>
+				<li>
+					Preset button: The timer should be able to save two presets for focus
+					and breaks and this button will toggle between them.
+				</li>
+			</ul>
+			<p>
+				Past getting the buttons to do this, I'll also need to create the logic
+				for the Flowmadoro X Pomodoro crossover mode at some point.
+			</p>
+
+			<h4>Code for my "MVP"</h4>
+				<pre><code>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;LiquidCrystal_I2C.h&gt;</span></span>
+
+<span class="hljs-comment">// set the LCD number of columns and rows</span>
+<span class="hljs-keyword">int</span> lcdColumns = <span class="hljs-number">16</span>;
+<span class="hljs-keyword">int</span> lcdRows = <span class="hljs-number">2</span>;
+
+LiquidCrystal_I2C lcd(<span class="hljs-number">0x27</span>, lcdColumns, lcdRows);  
+
+<span class="hljs-keyword">int</span> SDA_pin = <span class="hljs-number">8</span>;
+<span class="hljs-keyword">int</span> SCL_pin = <span class="hljs-number">20</span>;
+
+<span class="hljs-comment">// Buttons</span>
+<span class="hljs-keyword">int</span> HRSbut = <span class="hljs-number">6</span>;
+<span class="hljs-keyword">int</span> MINbut = <span class="hljs-number">7</span>;
+<span class="hljs-keyword">int</span> SECbut = <span class="hljs-number">21</span>;
+<span class="hljs-keyword">int</span> ONOFFbut = <span class="hljs-number">4</span>;
+<span class="hljs-keyword">int</span> MODEbut = <span class="hljs-number">2</span>;
+
+<span class="hljs-keyword">class</span> Button {
+<span class="hljs-comment">//Member variables</span>
+<span class="hljs-keyword">int</span> buttonPin;
+<span class="hljs-keyword">int</span> buttonState; <span class="hljs-comment">//what the button is currently reading</span>
+
+<span class="hljs-comment">//constructor</span>
+<span class="hljs-keyword">public</span>:
+Button(<span class="hljs-keyword">int</span> pin){
+    buttonPin = pin;
+    <span class="hljs-built_in">pinMode</span>(buttonPin, <span class="hljs-literal">INPUT_PULLUP</span>);
+
+    buttonState = <span class="hljs-literal">HIGH</span>;
+}
+
+<span class="hljs-keyword">int</span> Update() {
+    buttonState = <span class="hljs-built_in">digitalRead</span>(buttonPin);
+    <span class="hljs-built_in">return</span> buttonState;
+}
+
+};
+
+Button HRSBUTTON(HRSbut);
+Button MINBUTTON(MINbut);
+Button SECBUTTON(SECbut);
+Button STARTSTOPBUTT(ONOFFbut);
+Button MODEBUTTON(MODEbut);
+
+<span class="hljs-comment">// set LCD address, number of columns and rows</span>
+<span class="hljs-comment">// if you don't know your display address, run an I2C scanner sketch</span>
+
+<span class="hljs-keyword">void</span> <span class="hljs-built_in">setup</span>(){
+<span class="hljs-built_in">Serial</span>.<span class="hljs-built_in">begin</span>(<span class="hljs-number">9600</span>);
+<span class="hljs-built_in">Wire</span>.<span class="hljs-built_in">begin</span>(SDA_pin, SCL_pin);
+lcd.init();
+<span class="hljs-comment">// turn on LCD backlight                      </span>
+lcd.backlight();
+}
+
+<span class="hljs-keyword">void</span> <span class="hljs-built_in">loop</span>(){
+lcd.<span class="hljs-built_in">clear</span>();
+lcd.<span class="hljs-built_in">setCursor</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+
+lcd.<span class="hljs-built_in">print</span>(<span class="hljs-string">"Buttons: "</span>);
+lcd.<span class="hljs-built_in">setCursor</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+lcd.<span class="hljs-built_in">print</span>(HRSBUTTON.Update());
+lcd.<span class="hljs-built_in">print</span>(<span class="hljs-string">", "</span>);
+
+lcd.<span class="hljs-built_in">print</span>(MINBUTTON.Update());
+lcd.<span class="hljs-built_in">print</span>(<span class="hljs-string">", "</span>);
+
+lcd.<span class="hljs-built_in">print</span>(SECBUTTON.Update());
+lcd.<span class="hljs-built_in">print</span>(<span class="hljs-string">", "</span>);
+
+lcd.<span class="hljs-built_in">print</span>(STARTSTOPBUTT.Update());
+lcd.<span class="hljs-built_in">print</span>(<span class="hljs-string">", "</span>);
+lcd.<span class="hljs-built_in">print</span>(MODEBUTTON.Update());
+
+<span class="hljs-built_in">delay</span>(<span class="hljs-number">50</span>); 
+
+    <span class="hljs-comment">// set cursor to first column, first row</span>
+<span class="hljs-comment">// print message</span>
+}
+</code></pre>
+		</main>
+	</body>
+</html>
