@@ -1,0 +1,426 @@
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>PS 70: Intro to Digital Fabrication</title>
+		<link rel="stylesheet" href="../style.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+		/>
+	</head>
+
+	<header>
+		<nav class="container">
+			<a href="../index.html">Home</a>
+			<a href="../about.html">About me!</a>
+		</nav>
+	</header>
+
+	<body>
+		<main class="container">
+			<h2>The Assignment</h2>
+			<p>
+				Work with a partner or group of 3. Program one or more
+				microcontroller(s) to obtain and respond to information from the
+				internet or radio. Your project should include at least one input and
+				one output. Please consolidate documentation to a single page for your
+				group (this may be a good time to explore GitHub's collaboration
+				features).
+			</p>
+			<h3>Two Way Communication:</h3>
+			<p>
+				This week, our group (Azhaan, Woojin, and Xavier) decided to build on
+				the “ESP-NOW Two-Way Communication Between ESP32 Boards”
+				<a
+					href="https://randomnerdtutorials.com/esp-now-two-way-communication-esp32/"
+					>tutorial</a
+				>
+				from Random Nerd.
+			</p>
+			<h4>Getting the MAC address</h4>
+			<p>
+				In this project, we planned to have two ESP32 boards, each connected to
+				an LCD display and buttons, through which a user can navigate and select
+				alphabet characters to send to the other board via ESP-NOW. When a board
+				receives the readings, it displays them on the other LCD display. Each
+				board needed to know the other board MAC address in order to send the
+				message.
+			</p>
+			<p>
+				We began by finding out our own board MAC addresses by running this line
+				of code, as provided by another
+				<a
+					href="https://randomnerdtutorials.com/get-change-esp32-esp8266-mac-address-arduino/"
+					>tutorial</a
+				>
+				from Random Nerd:
+			</p>
+<pre><code>#ifdef ESP32
+  #include &lt;WiFi.h&gt;
+#else
+  #include &lt;ESP8266WiFi.h&gt;
+#endif
+
+void setup(){
+  Serial.begin(115200);
+  Serial.println();
+  Serial.print("ESP Board MAC Address:   ");
+  Serial.println(WiFi.macAddress());
+}
+
+void loop(){
+
+}
+</code></pre>
+			<p>
+				For one XIAO ESP32 that we used, we had to make adjustments and
+				modifications (e.g. resetting button) to successfully get that to read
+				and print on the serial monitor.
+			</p>
+			<p>
+				We often ran into issues with uploading the code and getting
+				<code>exit status 2</code> even though the boards were plugged in.
+			</p>
+			<h4>The sending and receiving code</h4>
+			<p>
+				Adjusting the code Random Nerd code to boil it down to it’s simplest
+				components was quite difficult. There were a lot of extra variable and
+				logic for temperature, humidity and pressure readings and sending these
+				readings to the other board via ESP-NOW. We simplified it to only send
+				string information.
+			</p>
+			<p>
+				After deleting all the unnecessary parts and adding on the ability to
+				read from Serial, we created code that could take a message from the
+				Serial and send it over to the other board.
+			</p>
+
+<pre><code>#include &lt;esp_now.h&gt;
+#include &lt;WiFi.h&gt;
+
+// REPLACE WITH THE MAC Address of your receiver
+uint8_t broadcastAddressX[] = {0x34, 0x85, 0x18, 0x02, 0xFA, 0x24};
+
+// Define variables to store data to be sent
+String outgoingString;
+
+// Define variables to store incoming data
+String incomingString;
+
+// Variable to store if sending data was successful
+String success;
+
+//Structure example to send data
+//Must match the receiver structure
+typedef struct struct_message {
+    String message;
+} struct_message;
+
+// Create a struct_message called outgoingMessage to hold message
+struct_message outgoingMessage;
+
+// Create a struct_message to hold incoming message
+struct_message incomingMessage;
+
+esp_now_peer_info_t peerInfo;
+
+// Callback when data is sent
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+    Serial.print("\r\nLast Packet Send Status:\t");
+    Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+    
+    if (status ==0){
+        success = "Delivery Success :)";
+    } else {
+        success = "Delivery Fail :(";
+    }
+}
+
+// Callback when data is received
+void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+    memcpy(&incomingMessage, incomingData, sizeof(incomingData));
+    Serial.print("Bytes received: ");
+    Serial.println(len);
+    incomingString = incomingMessage.message;
+    Serial.println(incomingMessage.message);
+    Serial.println(incomingString);
+    Serial.println("String is above");
+}
+
+void setup() {
+    // Init Serial Monitor
+    Serial.begin(115200);
+
+    // Set device as a Wi-Fi Station
+    WiFi.mode(WIFI_STA);
+    
+    // Init ESP-NOW
+    if (esp_now_init() != ESP_OK) {
+        Serial.println("Error initializing ESP-NOW");
+        return;
+    }
+    
+    // Once ESPNow is successfully Init, we will register for Send CB to
+    // get the status of Transmitted packet
+    esp_now_register_send_cb(OnDataSent);
+    
+    // Register peer
+    memcpy(peerInfo.peer_addr, broadcastAddressX, 6);
+    peerInfo.channel = 0;
+    peerInfo.encrypt = false;
+    
+    // Add peer        
+    if (esp_now_add_peer(&peerInfo) != ESP_OK){
+        Serial.println("Failed to add peer");
+        return;
+    }
+    
+    // Register for a callback function that will be called when data is received
+    esp_now_register_recv_cb(OnDataRecv);
+}
+
+String storedString;
+int incomingByte;
+
+void loop() {
+    storedString = "";
+    while(Serial.available() > 0) {
+        incomingByte = Serial.read();
+        storedString += char(incomingByte);
+    }
+    
+    if(storedString != "") {
+        outgoingMessage.message = storedString;
+        esp_err_t result = esp_now_send(broadcastAddressX, (uint8_t *) &outgoingMessage, sizeof(outgoingMessage));
+        
+        if (result == ESP_OK) {
+            Serial.println("Sent with success");
+        }
+        else {
+            Serial.println("Error sending the data");
+        }
+    }
+}
+    </code></pre>
+
+            <h4>Potentiometer control</h4>
+			<p>
+				Then we built the potentiometer controlled letter picker. It worked for
+				the most part but the potentiometer was too sensitive of a way to select
+				the letter. This partly due to an issue I was having with the
+				potentiometer (the value would hit it’s maximum half way through the
+				total turn radius) and just the sheer number of characters it was
+				picking from. I think this is because the ESP32 runs at 3.3V which but
+				the potentiometer’s output is based on a 5V signal.
+			</p>
+            
+            <div class = "grid">
+                <div>
+                    <img src = "../images/Networking week/Pot screen img.jpeg" width = 80%>
+                </div>
+                <div>
+                    <img src = "../images/Networking week/GIF of Pot Screen.gif" width = 80%>
+                </div>
+            </div><br>
+
+<pre><code>#include &#60LiquidCrystal_I2C.h>
+// set the LCD number of columns and rows
+int lcdColumns = 16;
+int lcdRows = 2;
+
+LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows); 
+
+int SDA_pin = 20;
+int SCL_pin = 8;
+
+int potScreen_pin = 4;
+int potLetter_pin = 2;
+
+int potScreenVal = 0;
+int potLetterVal = 0;
+
+const char Letters[28] = {'A','B','C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', '\0'};
+
+void setup() {
+    // put your setup code here, to run once:
+    Serial.begin(115200);
+    Serial.println("being");
+
+    Wire.begin(SDA_pin, SCL_pin);
+    lcd.init();
+    lcd.backlight();
+
+    analogReadResolution(12);
+}
+
+void loop() {
+    // put your main code here, to run repeatedly:
+    potScreenVal = analogRead(potScreen_pin);
+    potLetterVal = analogRead(potLetter_pin);
+
+    int screenIndex = map(potScreenVal, 0, 4095, 0, lcdColumns - 1);
+    int letterIndex = map(potLetterVal, 0, 4095, 0, 26);
+
+    Serial.print(screenIndex);
+    Serial.print(" : ");
+    Serial.println(Letters[letterIndex]);
+
+    lcd.setCursor(screenIndex, 0);
+    lcd.print(Letters[letterIndex]);
+}
+</code></pre>
+
+			<p>
+				This code uses the input from the potentiometers and maps it to an index
+				value for both the screen and the letter. Using this index value, I can
+				select the correct letters as well as the screen position! We decided
+				that getting this to work in a more user friendly way would be a project
+				on it’s own so we would instead just directly output to the LCD screen
+				using the Serial as our input on both ends.
+			</p>
+			<h3>The final version</h3>
+			<p>
+				We then integrated both of these and got the following code to output
+				the code:
+			</p>
+			<p>
+				The system takes the Serial input and prints it on the bottom line of
+				the LCD on the sender end and the receiver will output the string on the
+				top line of it's LCD.
+			</p>
+
+<pre><code>#include &#60LiquidCrystal_I2C.h>
+
+// set the LCD number of columns and rows
+int lcdColumns = 16;
+int lcdRows = 2;
+
+LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);  
+
+int SDA_pin = 20;
+int SCL_pin = 8;
+
+#include &#60esp_now.h>
+#include &#60WiFi.h>
+
+// REPLACE WITH THE MAC Address of your receiver 
+uint8_t broadcastAddressX[] = {0x34, 0x85, 0x18, 0x02, 0xFA, 0x24};
+
+// Define variables to store data to be sent
+String outgoingString;
+
+// Define variables to store incoming data
+String incomingString;
+
+// Variable to store if sending data was successful
+String success;
+
+//Structure example to send data
+//Must match the receiver structure
+typedef struct struct_message {
+    String message;
+} struct_message;
+
+// Create a struct_message called outgoingMessage to hold message
+struct_message outgoingMessage;
+
+// Create a struct_message to hold incoming message
+struct_message incomingMessage;
+
+esp_now_peer_info_t peerInfo;
+
+// Callback when data is sent
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+    Serial.print("\r\nLast Packet Send Status:\t");
+    Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+    if (status ==0){
+    success = "Delivery Success :)";
+    }
+    else{
+    success = "Delivery Fail :(";
+    }
+}
+
+// Callback when data is received
+void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+    memcpy(&incomingMessage, incomingData, sizeof(incomingData));
+    Serial.print("Bytes received: ");
+    Serial.println(len);
+    incomingString = incomingMessage.message;
+    Serial.println(incomingMessage.message);
+    Serial.println(incomingString);
+    Serial.println("String is above");
+
+    lcd.setCursor(0, 0);
+    lcd.print("                ");
+    lcd.print(incomingMessage.message);
+}
+    
+void setup() {
+// Init Serial Monitor
+    Serial.begin(115200);
+
+    Wire.begin(SDA_pin, SCL_pin);
+    lcd.init();
+    // turn on LCD backlight                      
+    lcd.backlight();
+    
+// Set device as a Wi-Fi Station
+    WiFi.mode(WIFI_STA);
+
+// Init ESP-NOW
+    if (esp_now_init() != ESP_OK) {
+    Serial.println("Error initializing ESP-NOW");
+    return;
+    }
+
+// Once ESPNow is successfully Init, we will register for Send CB to
+// get the status of Trasnmitted packet
+    esp_now_register_send_cb(OnDataSent);
+
+// Register peer
+    memcpy(peerInfo.peer_addr, broadcastAddressX, 6);
+    peerInfo.channel = 0;
+    peerInfo.encrypt = false;
+
+// Add peer        
+    if (esp_now_add_peer(&peerInfo) != ESP_OK){
+    Serial.println("Failed to add peer");
+    return;
+    }
+// Register for a callback function that will be called when data is received
+    esp_now_register_recv_cb(OnDataRecv);
+}
+
+String storedString;
+int incomingByte;
+
+void loop() {
+    storedString = "";
+    while(Serial.available() > 0) {
+    incomingByte = Serial.read();
+    storedString += char(incomingByte);
+    }
+
+    if(storedString != "") {
+    outgoingMessage.message = storedString;
+    esp_err_t result = esp_now_send(broadcastAddressX, (uint8_t *) &outgoingMessage, sizeof(outgoingMessage));
+
+    lcd.setCursor(0, 1);
+    lcd.print("                ");
+    lcd.print(incomingMessage.message);
+
+    if (result == ESP_OK) {
+        Serial.println("Sent with success");
+    }
+    else {
+        Serial.println("Error sending the data");
+    }
+    }
+}
+</code></pre>
+
+		</main>
+	</body>
+</html>
